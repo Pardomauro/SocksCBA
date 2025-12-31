@@ -61,9 +61,12 @@ router.post('/login', async (req, res) => {
 // Registro endpoint (opcional)
 router.post('/registro', async (req, res) => {
     try {
-        const { nombre, email, password } = req.body;
+        const { nombre, email, password, contrasena } = req.body;
         
-        if (!email || !password) {
+        // Manejar tanto 'password' como 'contrasena' del frontend
+        const finalPassword = password || contrasena;
+        
+        if (!email || !finalPassword) {
             return res.status(400).json({
                 success: false,
                 message: 'Email y contraseña son requeridos'
@@ -78,11 +81,11 @@ router.post('/registro', async (req, res) => {
                 message: 'El usuario ya existe'
             });
         }
-        
+
         const nuevoUsuario = await UsuarioService.agregar({
             nombre: nombre || 'Usuario',
             email,
-            contrasena: password
+            contrasena: finalPassword
         });
         
         res.status(201).json({

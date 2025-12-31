@@ -25,6 +25,11 @@ router.get('/', async (req, res) => {
 
 // Agregar nuevo usuario
 router.post('/', validarAgregarUsuario, async (req, res) => {
+    // Normalizar el campo de contraseña (aceptar tanto 'password' como 'contrasena')
+    if (req.body.password && !req.body.contrasena) {
+        req.body.contrasena = req.body.password;
+    }
+    
     const errores = validationResult(req);
     if (!errores.isEmpty()) {
         return res.status(400).json({

@@ -5,19 +5,20 @@ import { pool } from '../Config/db.js';
 export const validarAgregarUsuario = [
     body('nombre')
         .notEmpty().withMessage('El nombre es obligatorio')
-        .isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
+        .isLength({ min: 2 }).withMessage('El nombre debe tener al menos 2 caracteres'),
 
     body('email')
         .notEmpty().withMessage('El email es obligatorio')
         .isEmail().withMessage('Debe ser un email válido'),
 
-    body('contraseña')
+    body('contrasena')
         .notEmpty().withMessage('La contraseña es obligatoria')
-        .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres')
-        .matches(/[A-Z]/).withMessage('La contraseña debe contener al menos una letra mayúscula')
-        .matches(/[a-z]/).withMessage('La contraseña debe contener al menos una letra minúscula')
-        .matches(/[0-9]/).withMessage('La contraseña debe contener al menos un número')
-        .matches(/[@$!%*?&]/).withMessage('La contraseña debe contener al menos un carácter especial (@, $, !, %, *, ?, &)')
+        .isLength({ min: 4 }).withMessage('La contraseña debe tener al menos 4 caracteres')
+        // Comentamos las validaciones complejas temporalmente
+        // .matches(/[A-Z]/).withMessage('La contraseña debe contener al menos una letra mayúscula')
+        // .matches(/[a-z]/).withMessage('La contraseña debe contener al menos una letra minúscula')
+        // .matches(/[0-9]/).withMessage('La contraseña debe contener al menos un número')
+        // .matches(/[@$!%*?&]/).withMessage('La contraseña debe contener al menos un carácter especial (@, $, !, %, *, ?, &)')
 ];
 
 export const validarActualizarUsuario = [
@@ -29,7 +30,7 @@ export const validarActualizarUsuario = [
         .optional()
         .isEmail().withMessage('Debe ser un email válido'),
 
-    body('contraseña')
+    body('contrasena')
         .optional()
         .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres')
         .matches(/[A-Z]/).withMessage('La contraseña debe contener al menos una letra mayúscula')

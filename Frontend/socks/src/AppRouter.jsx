@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuthContext } from './Context/AuthContext';
-import Login from './Pages/Login';
+import { useAuthContext } from './context/AuthContext';
+import Login from './pages/Login';
 import Registro from './pages/Registro';
-import Home from './Pages/Home';
-import PrivateRoute from './Components/PrivateRoute';
-import CargarProductos from './Pages/CargarProductos';
-import RealizarVenta from './Pages/RealizarVenta';
-import RegistrarGastos from './Pages/RegistrarGastos';
-import ResumenFinanciero from './Pages/ResumenFinanciero';
+import Home from './pages/Home';
+import PrivateRoute from './components/PrivateRoute';
+import CargarProductos from './pages/CargarProductos';
+import RealizarVenta from './pages/RealizarVenta';
+import RegistrarGastos from './pages/RegistrarGastos';
+import ResumenFinanciero from './pages/ResumenFinanciero';
 
 export default function AppRouter() {
   const { user } = useAuthContext();

@@ -5,10 +5,16 @@ import api from '../services/api';
 export const login = async (email, password) => {
   try {
     const res = await api.post('/auth/login', { email, password });
-    // Soportar diferentes formas de respuesta: { token }, { data: { token } }, { success, data }
-    const token = res?.data?.token || res?.data?.data?.token || res?.data?.data;
-    if (token && typeof token === 'string') return { success: true, token };
-    if (res?.data?.success && res?.data?.data) return { success: true, token: res.data.data };
+    
+    // El backend envía: { success: true, data: { token: "...", user: {...} } }
+    if (res.data.success && res.data.data && res.data.data.token) {
+      return { 
+        success: true, 
+        token: res.data.data.token,
+        user: res.data.data.user 
+      };
+    }
+    
     throw new Error(res?.data?.message || 'Error de autenticación');
   } catch (err) {
     // Si el backend respondió con error, propagar mensaje claro

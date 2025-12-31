@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logoSocks.jpg';
-import { useAuthContext } from '../Context/AuthContext';
-import { login } from '../Services/authService';
+import { useAuthContext } from '../context/AuthContext';
+import { login } from '../services/authService';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -25,6 +25,7 @@ export default function Login() {
     
     try {
       const result = await login(email, password);
+      
       if (result.success) {
         setUserFromToken(result.token, email);
         navigate('/home');
@@ -76,4 +77,7 @@ export default function Login() {
       </div>
     </div>
   );
+
 }
+
+
