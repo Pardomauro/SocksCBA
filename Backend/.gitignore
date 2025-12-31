@@ -1,2 +1,6 @@
 
 .env
+node_modules
+crear_usuario_prueba.sql
+migration_categorias.sql
+
