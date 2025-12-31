@@ -46,15 +46,27 @@ app.get('/', (req, res) => {
 // Inicializar base de datos y arrancar el servidor
 const startServer = async () => {
     try {
+        console.log('Iniciando servidor...');
+        console.log('NODE_ENV:', process.env.NODE_ENV);
+        console.log('PORT:', PORT);
+        
         await initializeDatabase();
         console.log('Base de datos inicializada correctamente');
 
-        app.listen(PORT, () => {
-            console.log(`Servidor corriendo en http://localhost:${PORT}`);
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Servidor corriendo en puerto ${PORT}`);
         });
     } catch (error) {
         console.error('Error al iniciar el servidor:', error);
-        process.exit(1);
+        // En desarrollo, salir. En producción, intentar continuar solo con el servidor
+        if (process.env.NODE_ENV !== 'production') {
+            process.exit(1);
+        } else {
+            console.log('Intentando iniciar servidor sin inicialización completa de BD...');
+            app.listen(PORT, '0.0.0.0', () => {
+                console.log(`Servidor corriendo en puerto ${PORT} (modo recovery)`);
+            });
+        }
     }
 };
 

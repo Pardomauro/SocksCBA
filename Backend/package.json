@@ -5,10 +5,12 @@
   "license": "ISC",
   "author": "Mauro Pardo",
   "type": "module",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "node app.js",
+    "start": "NODE_ENV=production node server.js",
+    "dev": "NODE_ENV=development node server.js",
+    "legacy": "node app.js",
+    "build": "npm install --production=false",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

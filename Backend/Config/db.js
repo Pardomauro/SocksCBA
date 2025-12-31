@@ -52,17 +52,29 @@ const pool = mysql.createPool({
 // Inicializamos base de datos
 const initializeDatabase = async () => {
     try {
-        const tempConnection = await mysql.createConnection({
-            host: dbConfig.host,
-            user: dbConfig.user,
-            password: dbConfig.password,
-            port: dbConfig.port // Incluye el puerto en la conexión temporal
-        });
+        // En Railway, la base de datos ya existe, solo verificamos la conexión
+        if (railwayConfig) {
+            console.log('Detectada configuración de Railway, verificando conexión...');
+            const testConnection = await mysql.createConnection(dbConfig);
+            await testConnection.ping();
+            await testConnection.end();
+            console.log('Conexión a Railway MySQL verificada');
+        } else {
+            // Solo para desarrollo local - crear DB si no existe
+            console.log('Configuración local, creando base de datos si no existe...');
+            const tempConnection = await mysql.createConnection({
+                host: dbConfig.host,
+                user: dbConfig.user,
+                password: dbConfig.password,
+                port: dbConfig.port
+            });
 
-        await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-        await tempConnection.end();
+            await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
+            await tempConnection.end();
+        }
 
         // Importar y ejecutar la creación de tablas desde los modelos
+        console.log('Creando tablas...');
         const createUsuarioTable = (await import('../Modelos/Usuario.js')).default;
         const createProductoTable = (await import('../Modelos/Producto.js')).default;
         const createGastoTable = (await import('../Modelos/Gastos.js')).default;
@@ -75,8 +87,15 @@ const initializeDatabase = async () => {
         await createGastoTable();
         await createVentaTable();
         await createDetalleVentaTable();
+        
+        console.log('Tablas creadas/verificadas correctamente');
     } catch (error) {
         console.error('Error al inicializar la base de datos:', error);
+        // En producción, no fallar si ya están las tablas
+        if (process.env.NODE_ENV === 'production') {
+            console.log('Continuando en modo producción...');
+            return;
+        }
         throw error;
     }
 };

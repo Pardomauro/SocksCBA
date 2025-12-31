@@ -6,6 +6,11 @@
   "deploy": {
     "numReplicas": 1,
     "startCommand": "npm start",
-    "restartPolicyType": "ON_FAILURE"
+    "restartPolicyType": "ON_FAILURE",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 100
+  },
+  "environments": {
+    "NODE_ENV": "production"
   }
 }
