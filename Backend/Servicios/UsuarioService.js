@@ -1,4 +1,5 @@
 import { pool } from '../Config/db.js';
+import bcrypt from 'bcrypt';
 
 const obtenerTodos = async () => {
     const [usuarios] = await pool.query(
@@ -9,22 +10,37 @@ const obtenerTodos = async () => {
 
 const agregar = async (usuario) => {
     const { nombre, email, contrasena } = usuario;
+    
+    // Hashear la contraseña antes de guardarla
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(contrasena, saltRounds);
+    
     const [result] = await pool.query(
         `INSERT INTO Usuario (nombre, email, contrasena) VALUES (?, ?, ?);`,
-        [nombre, email, contrasena]
+        [nombre, email, hashedPassword]
     );
-    return { id: result.insertId, nombre, email, contrasena };
-
+    
+    // No devolver la contraseña hasheada
+    return { id: result.insertId, nombre, email };
 }
 
 const actualizar = async (id, usuario) => {
     const { nombre, email, contrasena } = usuario;
+    
+    let hashedPassword = contrasena;
+    // Solo hashear si se proporciona una nueva contraseña
+    if (contrasena) {
+        const saltRounds = 10;
+        hashedPassword = await bcrypt.hash(contrasena, saltRounds);
+    }
+    
     await pool.query(
-        `UPDATE Usuario SET nombre = ?, email = ?, contrasena = ? WHERE id = ?;
-        `,
-        [nombre, email, contrasena, id]
+        `UPDATE Usuario SET nombre = ?, email = ?, contrasena = ? WHERE id = ?;`,
+        [nombre, email, hashedPassword, id]
     );
-    return { id, nombre, email, contrasena };
+    
+    // No devolver la contraseña hasheada
+    return { id, nombre, email };
 }
 
 const eliminar = async (id) => {
@@ -49,8 +65,9 @@ const verificarCredenciales = async (email, contrasena) => {
         return null;
     }
     
-    // Comparación directa por ahora (después podemos agregar hashing)
-    if (usuario.contrasena !== contrasena) {
+    // Usar bcrypt para comparar la contraseña
+    const esValida = await bcrypt.compare(contrasena, usuario.contrasena);
+    if (!esValida) {
         return null;
     }
     

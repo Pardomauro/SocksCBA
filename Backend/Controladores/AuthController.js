@@ -1,4 +1,5 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import UsuarioService from '../Servicios/UsuarioService.js';
 
 const router = express.Router();
@@ -24,8 +25,16 @@ router.post('/login', async (req, res) => {
             });
         }
         
-        // Token simple por ahora
-        const token = `token-${usuario.id}-${Date.now()}`;
+        // Crear JWT token seguro
+        const JWT_SECRET = process.env.JWT_SECRET || 'tu_clave_secreta_super_segura_cambiala_en_produccion';
+        const token = jwt.sign(
+            { 
+                userId: usuario.id, 
+                email: usuario.email 
+            }, 
+            JWT_SECRET, 
+            { expiresIn: '24h' }
+        );
         
         res.json({
             success: true,

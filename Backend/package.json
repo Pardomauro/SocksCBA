@@ -11,6 +11,7 @@
     "dev": "NODE_ENV=development node server.js",
     "legacy": "node app.js",
     "build": "npm install --production=false",
+    "migrate-passwords": "node migrar-contrasenas.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
