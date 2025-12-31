@@ -9,7 +9,6 @@ const dbConfig = {
     charset: 'utf8mb4'
 };
 
-console.log('Configuración de la base de datos:', dbConfig);
 
 
 const createConnection = async () => {
