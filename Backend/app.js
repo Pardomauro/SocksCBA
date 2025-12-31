@@ -18,7 +18,13 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'], // Permitir Vite y otras URLs
+    origin: [
+        'http://localhost:5173', 
+        'http://localhost:3000',
+        process.env.FRONTEND_URL, // URL del frontend desplegado
+        // Railway genera URLs automáticamente, así que también permitimos cualquier subdominio de railway.app
+        /.*\.railway\.app$/
+    ].filter(Boolean), // Elimina valores undefined/null
     credentials: true
 }));
 app.use(express.json());

@@ -1,11 +1,31 @@
 import mysql from 'mysql2/promise';
 
-const dbConfig = {
+// Railway proporciona DATABASE_URL o MYSQL_URL, parseamos si está disponible
+const parseConnectionString = (connectionString) => {
+    if (!connectionString) return null;
+    
+    // Formato: mysql://user:password@host:port/database
+    const match = connectionString.match(/mysql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+    if (match) {
+        return {
+            user: match[1],
+            password: match[2],
+            host: match[3],
+            port: parseInt(match[4]),
+            database: match[5]
+        };
+    }
+    return null;
+};
+
+const railwayConfig = parseConnectionString(process.env.DATABASE_URL || process.env.MYSQL_URL);
+
+const dbConfig = railwayConfig || {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'socks_db',
-    port: process.env.DB_PORT || 3306, // Incluye el puerto desde .env
+    port: process.env.DB_PORT || 3306,
     charset: 'utf8mb4'
 };
 
