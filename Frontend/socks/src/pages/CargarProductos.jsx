@@ -33,7 +33,13 @@ export default function CargarProductos() {
     setError('');
     setLoading(true);
     try {
-      await addProducto({ nombre, precio, categoria });
+      // Solo enviar categoria si tiene un valor seleccionado
+      const producto = { 
+        nombre, 
+        precio, 
+        categoria: categoria || undefined 
+      };
+      await addProducto(producto);
       const lista = await getProductos();
       setProductos(lista);
       setNombre(''); setPrecio(''); setCategoria('');
@@ -55,7 +61,13 @@ export default function CargarProductos() {
     setError('');
     setLoading(true);
     try {
-      await updateProducto(editId, { nombre: editNombre, precio: editPrecio, categoria: editCategoria });
+      // Solo enviar categoria si tiene un valor seleccionado
+      const producto = { 
+        nombre: editNombre, 
+        precio: editPrecio, 
+        categoria: editCategoria || undefined 
+      };
+      await updateProducto(editId, producto);
       const lista = await getProductos();
       setProductos(lista);
       setEditId(null);
