@@ -6,7 +6,15 @@ const obtenerGastos = async () => {
         `SELECT id, descripcion, monto, fecha FROM Gastos ORDER BY id ASC;`
     );
     console.log('Backend GastosService - obtenerGastos resultado desde BD:', gastos);
-    return gastos;
+    
+    // Formatear las fechas para evitar problemas de zona horaria
+    const gastosFormateados = gastos.map(gasto => ({
+        ...gasto,
+        fecha: gasto.fecha instanceof Date ? gasto.fecha.toISOString().split('T')[0] : gasto.fecha
+    }));
+    
+    console.log('Backend GastosService - gastos con fechas formateadas:', gastosFormateados);
+    return gastosFormateados;
 };
 
 const obtenerGastoPorId = async (id) => {
@@ -14,6 +22,12 @@ const obtenerGastoPorId = async (id) => {
         `SELECT id, descripcion, monto, fecha FROM Gastos WHERE id = ?;`,
         [id]
     );
+    
+    if (gasto.length > 0) {
+        // Formatear la fecha para evitar problemas de zona horaria
+        gasto[0].fecha = gasto[0].fecha instanceof Date ? gasto[0].fecha.toISOString().split('T')[0] : gasto[0].fecha;
+    }
+    
     return gasto[0];
 };
 
