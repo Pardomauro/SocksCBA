@@ -18,7 +18,15 @@ export const convertirUTCAHoraArgentina = (fechaUTC) => {
  * @returns {string} - Fecha formateada en hora argentina
  */
 export const formatearFechaArgentina = (fechaUTC, opciones = {}) => {
-  const fecha = new Date(fechaUTC);
+  let fecha;
+  
+  // Si es string en formato YYYY-MM-DD, crear fecha local sin conversión UTC
+  if (typeof fechaUTC === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(fechaUTC)) {
+    const [year, month, day] = fechaUTC.split('-');
+    fecha = new Date(year, month - 1, day); // Crear fecha local
+  } else {
+    fecha = new Date(fechaUTC);
+  }
   
   const opcionesPorDefecto = {
     day: '2-digit',
