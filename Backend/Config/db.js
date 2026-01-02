@@ -1,11 +1,11 @@
 import mysql from 'mysql2/promise';
 
 const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'socks_db',
-    port: process.env.DB_PORT || 3306,
+    host: process.env.MYSQLHOST || process.env.DB_HOST || '127.0.0.1', 
+    user: process.env.MYSQLUSER || process.env.DB_USER || 'root',
+    password: process.env.MYSQLPASSWORD || process.env.DB_PASSWORD || '',
+    database: process.env.MYSQLDATABASE || process.env.DB_NAME || 'socks_db',
+    port: parseInt(process.env.MYSQLPORT || process.env.DB_PORT || 3306), 
     charset: 'utf8mb4'
 };
 
@@ -36,9 +36,13 @@ const initializeDatabase = async () => {
             host: dbConfig.host,
             user: dbConfig.user,
             password: dbConfig.password,
-            port: dbConfig.port
+            port: dbConfig.port,
+            database: dbConfig.database
         });
 
+        console.log('Verificando/Creando base de datos...');
+
+        // Crear la base de datos si no existe
         await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
         await tempConnection.end();
 
