@@ -26,23 +26,29 @@ const obtenerGastosPorFecha = async (fecha) => {
 
 const agregarGasto = async (gasto) => {
     const { descripcion, monto, fecha } = gasto;
+    console.log('Backend GastosService - agregarGasto recibió fecha:', fecha);
     // Asegurar que la fecha se guarde como fecha, no como datetime con zona horaria
-    const fechaFormateada = fecha.split('T')[0]; // Tomar solo la parte de fecha YYYY-MM-DD
+    const fechaFormateada = fecha.includes('T') ? fecha.split('T')[0] : fecha; // Tomar solo la parte de fecha YYYY-MM-DD
+    console.log('Backend GastosService - Fecha formateada para BD:', fechaFormateada);
     const [result] = await pool.query(
         `INSERT INTO Gastos (descripcion, monto, fecha) VALUES (?, ?, ?);`,
         [descripcion, monto, fechaFormateada]
     );
+    console.log('Backend GastosService - Registro insertado con ID:', result.insertId);
     return { id: result.insertId, descripcion, monto, fecha: fechaFormateada };
 };
 
 const actualizarGasto = async (id, gasto) => {
     const { descripcion, monto, fecha } = gasto;
+    console.log('Backend GastosService - actualizarGasto recibió fecha:', fecha);
     // Asegurar que la fecha se guarde como fecha, no como datetime con zona horaria
-    const fechaFormateada = fecha.split('T')[0]; // Tomar solo la parte de fecha YYYY-MM-DD
+    const fechaFormateada = fecha.includes('T') ? fecha.split('T')[0] : fecha; // Tomar solo la parte de fecha YYYY-MM-DD
+    console.log('Backend GastosService - Fecha formateada para BD:', fechaFormateada);
     await pool.query(
         `UPDATE Gastos SET descripcion = ?, monto = ?, fecha = ? WHERE id = ?;`,
         [descripcion, monto, fechaFormateada, id]
     );
+    console.log('Backend GastosService - Registro actualizado con ID:', id);
     return { id, descripcion, monto, fecha: fechaFormateada };
 };
 

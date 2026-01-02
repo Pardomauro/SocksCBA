@@ -62,8 +62,10 @@ router.get('/fecha/:fecha', validarObtenerGastoPorFecha,async (req, res) => {
 // Agregar nuevo gasto
 router.post('/', validarAgregarGasto, async (req, res) => {
     try {
+        console.log('Backend Controller - POST /gastos recibió:', req.body);
         const errores = validationResult(req);
         if (!errores.isEmpty()) {
+            console.log('Backend Controller - Errores de validación:', errores.array());
             return res.status(400).json({
                 success: false,
                 message: 'Errores de validación',
@@ -72,6 +74,7 @@ router.post('/', validarAgregarGasto, async (req, res) => {
         }
     
         const nuevoGasto = await GastosService.agregarGasto(req.body);
+        console.log('Backend Controller - Gasto creado:', nuevoGasto);
         res.status(201).json({
             success: true,
             message: 'Gasto agregado correctamente',

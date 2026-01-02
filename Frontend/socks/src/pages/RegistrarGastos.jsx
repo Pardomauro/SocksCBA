@@ -23,6 +23,7 @@ export default function RegistrarGastos() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); setSuccess('');
+    console.log('Frontend - Fecha original desde input:', fecha);
     try {
       await addGasto({ descripcion, monto, fecha });
       const lista = await getGastos();
@@ -60,6 +61,7 @@ export default function RegistrarGastos() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     setError(''); setSuccess('');
+    console.log('Frontend - Fecha para actualizar desde input:', editFecha);
     try {
       await updateGasto(editId, { descripcion: editDescripcion, monto: editMonto, fecha: editFecha });
       const lista = await getGastos();

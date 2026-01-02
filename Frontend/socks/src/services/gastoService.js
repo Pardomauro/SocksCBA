@@ -12,12 +12,16 @@ export const getGastosPorFecha = async (fechaStr) => {
 };
 
 export const addGasto = async ({ descripcion, monto, fecha }) => {
+  console.log('Service - addGasto recibió fecha:', fecha);
   const res = await api.post('/gastos', { descripcion, monto, fecha });
+  console.log('Service - Respuesta del backend:', res.data);
   return res.data?.data;
 };
 
 export const updateGasto = async (id, { descripcion, monto, fecha }) => {
+  console.log('Service - updateGasto recibió fecha:', fecha);
   const res = await api.put(`/gastos/${id}`, { descripcion, monto, fecha });
+  console.log('Service - Respuesta del backend:', res.data);
   return res.data?.data;
 };
 
