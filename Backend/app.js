@@ -18,7 +18,11 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'], // Permitir Vite y otras URLs
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://sockscba-frontend-production.up.railway.app'
+    ], // Permitir Vite y el dominio público de Railway
     credentials: true
 }));
 app.use(express.json());
