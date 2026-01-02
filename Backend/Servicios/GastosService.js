@@ -26,20 +26,24 @@ const obtenerGastosPorFecha = async (fecha) => {
 
 const agregarGasto = async (gasto) => {
     const { descripcion, monto, fecha } = gasto;
+    // Asegurar que la fecha se guarde como fecha, no como datetime con zona horaria
+    const fechaFormateada = fecha.split('T')[0]; // Tomar solo la parte de fecha YYYY-MM-DD
     const [result] = await pool.query(
         `INSERT INTO Gastos (descripcion, monto, fecha) VALUES (?, ?, ?);`,
-        [descripcion, monto, fecha]
+        [descripcion, monto, fechaFormateada]
     );
-    return { id: result.insertId, descripcion, monto, fecha };
+    return { id: result.insertId, descripcion, monto, fecha: fechaFormateada };
 };
 
 const actualizarGasto = async (id, gasto) => {
     const { descripcion, monto, fecha } = gasto;
+    // Asegurar que la fecha se guarde como fecha, no como datetime con zona horaria
+    const fechaFormateada = fecha.split('T')[0]; // Tomar solo la parte de fecha YYYY-MM-DD
     await pool.query(
         `UPDATE Gastos SET descripcion = ?, monto = ?, fecha = ? WHERE id = ?;`,
-        [descripcion, monto, fecha, id]
+        [descripcion, monto, fechaFormateada, id]
     );
-    return { id, descripcion, monto, fecha };
+    return { id, descripcion, monto, fecha: fechaFormateada };
 };
 
 const eliminarGasto = async (id) => {
