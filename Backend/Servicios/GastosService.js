@@ -5,6 +5,7 @@ const obtenerGastos = async () => {
     const [gastos] = await pool.query(
         `SELECT id, descripcion, monto, fecha FROM Gastos ORDER BY id ASC;`
     );
+    console.log('Backend GastosService - obtenerGastos resultado desde BD:', gastos);
     return gastos;
 };
 

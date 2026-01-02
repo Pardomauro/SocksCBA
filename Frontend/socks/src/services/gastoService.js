@@ -2,6 +2,7 @@ import api from './api';
 
 export const getGastos = async () => {
   const res = await api.get('/gastos');
+  console.log('Frontend Service - getGastos recibió del backend:', res.data?.data);
   return res.data?.data || [];
 };
 
