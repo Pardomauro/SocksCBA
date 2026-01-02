@@ -38,11 +38,23 @@ export default function RegistrarGastos() {
     setEditId(gasto.id);
     setEditDescripcion(gasto.descripcion);
     setEditMonto(gasto.monto);
-    // Convertir fecha UTC a formato yyyy-MM-dd para el input
-    const fechaUTC = new Date(gasto.fecha);
-    const fechaArgentina = new Date(fechaUTC.getTime() - (3 * 60 * 60 * 1000));
-    const fechaFormateada = fechaArgentina.toISOString().slice(0, 10);
-    setEditFecha(fechaFormateada);
+    // Usar la fecha como string directamente si ya está en formato correcto
+    // o convertir desde la fecha UTC manteniendo la fecha local
+    let fechaParaEditar;
+    if (typeof gasto.fecha === 'string' && gasto.fecha.includes('T')) {
+      // Si es formato ISO, extraer solo la parte de la fecha
+      fechaParaEditar = gasto.fecha.split('T')[0];
+    } else if (gasto.fecha) {
+      // Si es fecha Date, convertir a formato yyyy-MM-dd sin cambiar zona horaria
+      const fecha = new Date(gasto.fecha);
+      const year = fecha.getFullYear();
+      const month = String(fecha.getMonth() + 1).padStart(2, '0');
+      const day = String(fecha.getDate()).padStart(2, '0');
+      fechaParaEditar = `${year}-${month}-${day}`;
+    } else {
+      fechaParaEditar = obtenerFechaActualArgentina();
+    }
+    setEditFecha(fechaParaEditar);
   };
 
   const handleUpdate = async (e) => {

@@ -40,7 +40,13 @@ export const formatearFechaArgentina = (fechaUTC, opciones = {}) => {
  * @returns {string} - Fecha actual argentina en formato ISO
  */
 export const obtenerFechaActualArgentina = () => {
+  // Crear fecha actual en zona horaria argentina
   const ahora = new Date();
-  const fechaArgentina = new Date(ahora.getTime() - (ahora.getTimezoneOffset() * 60000));
-  return fechaArgentina.toISOString().slice(0, 10);
+  const fechaArgentina = new Date(ahora.toLocaleString("en-US", {timeZone: "America/Argentina/Buenos_Aires"}));
+  
+  const year = fechaArgentina.getFullYear();
+  const month = String(fechaArgentina.getMonth() + 1).padStart(2, '0');
+  const day = String(fechaArgentina.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
 };
