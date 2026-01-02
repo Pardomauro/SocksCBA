@@ -218,45 +218,47 @@ export default function RealizarVenta() {
       {/* Historial de ventas */}
       <div className="w-full max-w-2xl">
         <h3 className="text-lg font-bold mb-2 text-gray-700">Historial de ventas</h3>
-        <table className="w-full bg-white rounded-lg shadow overflow-hidden">
-          <thead>
-            <tr className="bg-blue-100">
-              <th className="py-2 px-4 text-left">Fecha</th>
-              <th className="py-2 px-4 text-left">Productos</th>
-              <th className="py-2 px-4 text-right">Total</th>
-              <th className="py-2 px-4 text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ventas.length === 0 && (
-              <tr><td colSpan={4} className="text-center py-4 text-gray-500">No hay ventas registradas</td></tr>
-            )}
-            {ventas.map(venta => (
-              <tr key={venta.id} className="border-b">
-                <td className="py-2 px-4">
-                  {formatearFechaArgentina(venta.fecha)}
-                </td>
-                <td className="py-2 px-4">
-                  {venta.productos && venta.productos.length > 0 ? (
-                    venta.productos.map((p, index) => (
-                      <div key={`${venta.id}-${index}`}>{p.nombre} x{p.cantidad}</div>
-                    ))
-                  ) : (
-                    <div className="text-gray-500">Sin detalles</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 text-right font-semibold">${venta.total}</td>
-                <td className="py-2 px-2 sm:px-4 text-center">
-                  <ActionButtons
-                    onEdit={() => handleEditarVenta(venta)}
-                    onDelete={() => handleEliminarVenta(venta.id)}
-                    size="sm"
-                  />
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full bg-white rounded-lg shadow overflow-hidden min-w-full">
+            <thead>
+              <tr className="bg-blue-100">
+                <th className="py-2 px-2 sm:px-4 text-left text-sm">Fecha</th>
+                <th className="py-2 px-2 sm:px-4 text-left text-sm">Productos</th>
+                <th className="py-2 px-2 sm:px-4 text-right text-sm">Total</th>
+                <th className="py-2 px-2 sm:px-4 text-center text-sm w-20 sm:w-auto">Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {ventas.length === 0 && (
+                <tr><td colSpan={4} className="text-center py-4 text-gray-500">No hay ventas registradas</td></tr>
+              )}
+              {ventas.map(venta => (
+                <tr key={venta.id} className="border-b">
+                  <td className="py-2 px-2 sm:px-4 text-xs sm:text-sm">
+                    {formatearFechaArgentina(venta.fecha)}
+                  </td>
+                  <td className="py-2 px-2 sm:px-4 text-xs sm:text-sm">
+                    {venta.productos && venta.productos.length > 0 ? (
+                      venta.productos.map((p, index) => (
+                        <div key={`${venta.id}-${index}`}>{p.nombre} x{p.cantidad}</div>
+                      ))
+                    ) : (
+                      <div className="text-gray-500">Sin detalles</div>
+                    )}
+                  </td>
+                  <td className="py-2 px-2 sm:px-4 text-right font-semibold text-xs sm:text-sm">${venta.total}</td>
+                  <td className="py-2 px-1 sm:px-4 text-center">
+                    <ActionButtons
+                      onEdit={() => handleEditarVenta(venta)}
+                      onDelete={() => handleEliminarVenta(venta.id)}
+                      size="sm"
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ export default function ActionButtons({
   size = 'sm'
 }) {
   const sizeClasses = {
-    sm: 'px-2 py-1 text-xs sm:text-sm',
+    sm: 'px-1 py-0.5 text-xs',
     md: 'px-3 py-1.5 text-sm',
     lg: 'px-4 py-2 text-base'
   };
@@ -27,23 +27,23 @@ export default function ActionButtons({
   const buttonSize = sizeClasses[size] || sizeClasses.sm;
 
   return (
-    <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 justify-center">
+    <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-1 justify-center items-center">
       {isEditing ? (
         // Botones para modo edición
         <>
           <button
             onClick={onSave}
             disabled={loading}
-            className={`bg-green-500 hover:bg-green-600 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize}`}
+            className={`bg-green-500 hover:bg-green-600 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize} min-w-0`}
           >
-            Guardar
+            ✓
           </button>
           <button
             onClick={onCancel}
             disabled={loading}
-            className={`bg-gray-400 hover:bg-gray-500 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize}`}
+            className={`bg-gray-400 hover:bg-gray-500 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize} min-w-0`}
           >
-            Cancelar
+            ✕
           </button>
         </>
       ) : (
@@ -52,16 +52,20 @@ export default function ActionButtons({
           <button
             onClick={onEdit}
             disabled={loading}
-            className={`bg-yellow-500 hover:bg-yellow-600 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize}`}
+            className={`bg-yellow-500 hover:bg-yellow-600 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize} min-w-0`}
+            title="Editar"
           >
-            Editar
+            <span className="sm:hidden">✏️</span>
+            <span className="hidden sm:inline">Editar</span>
           </button>
           <button
             onClick={onDelete}
             disabled={loading}
-            className={`bg-red-500 hover:bg-red-600 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize}`}
+            className={`bg-red-500 hover:bg-red-600 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize} min-w-0`}
+            title="Eliminar"
           >
-            Eliminar
+            <span className="sm:hidden">🗑️</span>
+            <span className="hidden sm:inline">Eliminar</span>
           </button>
         </>
       )}
