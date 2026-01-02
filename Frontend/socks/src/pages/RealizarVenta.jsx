@@ -172,7 +172,9 @@ export default function RealizarVenta() {
                           min={1}
                           value={getCantidad(prod.id)}
                           onChange={e => handleCantidad(prod.id, e.target.value)}
-                          className="w-16 px-2 py-1 border rounded ml-2"
+                          onFocus={e => e.target.select()}
+                          className="w-16 px-2 py-1 border rounded ml-2 text-center"
+                          placeholder="1"
                         />
                       )}
                     </div>

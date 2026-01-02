@@ -55,7 +55,7 @@ export default function ActionButtons({
             className={`bg-yellow-500 hover:bg-yellow-600 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize} min-w-0`}
             title="Editar"
           >
-            <span className="sm:hidden">✏️</span>
+            <span className="sm:hidden">Editar</span>
             <span className="hidden sm:inline">Editar</span>
           </button>
           <button
@@ -64,7 +64,7 @@ export default function ActionButtons({
             className={`bg-red-500 hover:bg-red-600 text-white rounded disabled:opacity-60 w-full sm:w-auto transition-colors ${buttonSize} min-w-0`}
             title="Eliminar"
           >
-            <span className="sm:hidden">🗑️</span>
+            <span className="sm:hidden">Eliminar</span>
             <span className="hidden sm:inline">Eliminar</span>
           </button>
         </>

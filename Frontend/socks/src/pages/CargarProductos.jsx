@@ -135,36 +135,37 @@ export default function CargarProductos() {
       </form>
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="w-full max-w-4xl">
-        <table className="w-full bg-white rounded-lg shadow overflow-hidden">
-          <thead>
-            <tr className="bg-blue-100">
-              <th className="py-2 px-4 text-left">Nombre</th>
-              <th className="py-2 px-4 text-left">Categoría</th>
-              <th className="py-2 px-4 text-left">Precio</th>
-              <th className="py-2 px-4 text-center">Acciones</th>
-            </tr>
-          </thead>
+        <div className="overflow-x-auto">
+          <table className="w-full bg-white rounded-lg shadow overflow-hidden min-w-full">
+            <thead>
+              <tr className="bg-blue-100">
+                <th className="py-2 px-2 sm:px-4 text-left text-sm">Nombre</th>
+                <th className="py-2 px-2 sm:px-4 text-left text-sm">Categoría</th>
+                <th className="py-2 px-2 sm:px-4 text-left text-sm">Precio</th>
+                <th className="py-2 px-2 sm:px-4 text-center text-sm w-20 sm:w-auto">Acciones</th>
+              </tr>
+            </thead>
           <tbody>
             {productos.map(prod => (
               <tr key={prod.id} className="border-b">
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4 text-xs sm:text-sm">
                   {editId === prod.id ? (
                     <input
                       type="text"
                       value={editNombre}
                       onChange={e => setEditNombre(e.target.value)}
-                      className="px-2 py-1 border rounded w-full"
+                      className="px-2 py-1 border rounded w-full text-xs sm:text-sm"
                     />
                   ) : (
                     prod.nombre
                   )}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4 text-xs sm:text-sm">
                   {editId === prod.id ? (
                     <select
                       value={editCategoria}
                       onChange={e => setEditCategoria(e.target.value)}
-                      className="px-2 py-1 border rounded w-full"
+                      className="px-2 py-1 border rounded w-full text-xs sm:text-sm"
                     >
                       <option value="">Seleccionar</option>
                       {categoriasPredefinidas.map(cat => (
@@ -177,19 +178,19 @@ export default function CargarProductos() {
                     </span>
                   )}
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4 text-xs sm:text-sm">
                   {editId === prod.id ? (
                     <input
                       type="number"
                       value={editPrecio}
                       onChange={e => setEditPrecio(e.target.value)}
-                      className="px-2 py-1 border rounded w-full"
+                      className="px-2 py-1 border rounded w-full text-xs sm:text-sm"
                     />
                   ) : (
                     `$${prod.precio}`
                   )}
                 </td>
-                <td className="py-2 px-2 sm:px-4 text-center">
+                <td className="py-2 px-1 sm:px-4 text-center">
                   <ActionButtons
                     isEditing={editId === prod.id}
                     onEdit={() => handleEdit(prod)}
@@ -203,7 +204,8 @@ export default function CargarProductos() {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   );

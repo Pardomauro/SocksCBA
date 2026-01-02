@@ -112,15 +112,16 @@ export default function RegistrarGastos() {
       {/* Historial de gastos */}
       <div className="w-full max-w-2xl">
         <h3 className="text-lg font-bold mb-2 text-gray-700">Historial de gastos</h3>
-        <table className="w-full bg-white rounded-lg shadow overflow-hidden">
-          <thead>
-            <tr className="bg-blue-100">
-              <th className="py-2 px-4 text-left">Fecha</th>
-              <th className="py-2 px-4 text-left">Motivo</th>
-              <th className="py-2 px-4 text-right">Monto</th>
-              <th className="py-2 px-4 text-center">Acciones</th>
-            </tr>
-          </thead>
+        <div className="overflow-x-auto">
+          <table className="w-full bg-white rounded-lg shadow overflow-hidden min-w-full">
+            <thead>
+              <tr className="bg-blue-100">
+                <th className="py-2 px-2 sm:px-4 text-left text-sm">Fecha</th>
+                <th className="py-2 px-2 sm:px-4 text-left text-sm">Motivo</th>
+                <th className="py-2 px-2 sm:px-4 text-right text-sm">Monto</th>
+                <th className="py-2 px-2 sm:px-4 text-center text-sm w-20 sm:w-auto">Acciones</th>
+              </tr>
+            </thead>
           <tbody>
             {gastos.length === 0 && (
               <tr><td colSpan={4} className="text-center py-4 text-gray-500">No hay gastos registrados</td></tr>
@@ -129,16 +130,16 @@ export default function RegistrarGastos() {
               <tr key={gasto.id} className="border-b">
                 {editId === gasto.id ? (
                   <>
-                    <td className="py-2 px-4">
-                      <input type="date" value={editFecha} onChange={e => setEditFecha(e.target.value)} className="px-2 py-1 border rounded w-full" />
+                    <td className="py-2 px-2 sm:px-4">
+                      <input type="date" value={editFecha} onChange={e => setEditFecha(e.target.value)} className="px-2 py-1 border rounded w-full text-xs sm:text-sm" />
                     </td>
-                    <td className="py-2 px-4">
-                      <input type="text" value={editDescripcion} onChange={e => setEditDescripcion(e.target.value)} className="px-2 py-1 border rounded w-full" />
+                    <td className="py-2 px-2 sm:px-4">
+                      <input type="text" value={editDescripcion} onChange={e => setEditDescripcion(e.target.value)} className="px-2 py-1 border rounded w-full text-xs sm:text-sm" />
                     </td>
-                    <td className="py-2 px-4 text-right">
-                      <input type="number" value={editMonto} onChange={e => setEditMonto(e.target.value)} className="px-2 py-1 border rounded w-full text-right" />
+                    <td className="py-2 px-2 sm:px-4 text-right">
+                      <input type="number" value={editMonto} onChange={e => setEditMonto(e.target.value)} className="px-2 py-1 border rounded w-full text-right text-xs sm:text-sm" />
                     </td>
-                    <td className="py-2 px-2 sm:px-4 text-center">
+                    <td className="py-2 px-1 sm:px-4 text-center">
                       <ActionButtons
                         isEditing={true}
                         onSave={handleUpdate}
@@ -149,10 +150,10 @@ export default function RegistrarGastos() {
                   </>
                 ) : (
                   <>
-                    <td className="py-2 px-4">{formatearFechaArgentina(gasto.fecha, { hour: undefined, minute: undefined })}</td>
-                    <td className="py-2 px-4">{gasto.descripcion}</td>
-                    <td className="py-2 px-4 text-right font-semibold">${gasto.monto}</td>
-                    <td className="py-2 px-2 sm:px-4 text-center">
+                    <td className="py-2 px-2 sm:px-4 text-xs sm:text-sm">{formatearFechaArgentina(gasto.fecha, { hour: undefined, minute: undefined })}</td>
+                    <td className="py-2 px-2 sm:px-4 text-xs sm:text-sm">{gasto.descripcion}</td>
+                    <td className="py-2 px-2 sm:px-4 text-right font-semibold text-xs sm:text-sm">${gasto.monto}</td>
+                    <td className="py-2 px-1 sm:px-4 text-center">
                       <ActionButtons
                         onEdit={() => handleEdit(gasto)}
                         onDelete={() => handleDelete(gasto.id)}
@@ -164,7 +165,8 @@ export default function RegistrarGastos() {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   );
