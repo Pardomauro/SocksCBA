@@ -22,12 +22,13 @@ const obtenerTodos = async () => {
 const agregar = async (producto) => {
     const { nombre, precio, categoria } = producto;
     try {
-        // Intentar con categoria primero
+        // Usar la categoría seleccionada, o 'General' solo si no se proporciona
+        const categoriaFinal = categoria && categoria.trim() !== '' ? categoria : 'General';
         const [result] = await pool.query(
             `INSERT INTO Producto (nombre, precio, categoria) VALUES (?, ?, ?);`,
-            [nombre, precio, categoria || 'General']
+            [nombre, precio, categoriaFinal]
         );
-        return { id: result.insertId, nombre, precio, categoria: categoria || 'General' };
+        return { id: result.insertId, nombre, precio, categoria: categoriaFinal };
     } catch (error) {
         // Si falla (columna no existe), usar solo nombre y precio
         if (error.code === 'ER_BAD_FIELD_ERROR') {
@@ -44,12 +45,13 @@ const agregar = async (producto) => {
 const actualizar = async (id, producto) => {
     const { nombre, precio, categoria } = producto;
     try {
-        // Intentar con categoria primero
+        // Usar la categoría seleccionada, o 'General' solo si no se proporciona
+        const categoriaFinal = categoria && categoria.trim() !== '' ? categoria : 'General';
         await pool.query(
             `UPDATE Producto SET nombre = ?, precio = ?, categoria = ? WHERE id = ?;`,
-            [nombre, precio, categoria || 'General', id]
+            [nombre, precio, categoriaFinal, id]
         );
-        return { id, nombre, precio, categoria: categoria || 'General' };
+        return { id, nombre, precio, categoria: categoriaFinal };
     } catch (error) {
         // Si falla (columna no existe), usar solo nombre y precio
         if (error.code === 'ER_BAD_FIELD_ERROR') {
